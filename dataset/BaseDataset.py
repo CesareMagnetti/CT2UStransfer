@@ -25,10 +25,12 @@ class BaseDataset(Dataset, ABC):
     __metaclass__  = ABCMeta
 
     @abstractmethod
-    def __init__(self, parser):
+    def __init__(self, parser, mode):
+        super(BaseDataset, self).__init__()
         self.root = parser.dataroot
+        self.mode = mode
         self.ID1, self.ID2 = "A", "B"
-        self.name1, self.name2 = parser.mode + self.ID1, parser.mode + self.ID2
+        self.name1, self.name2 = mode + self.ID1, mode + self.ID2
         self.path1, self.path2 = os.path.join(self.root, self.name1), os.path.join(self.root, self.name2)
         self.parser = parser
 
@@ -43,18 +45,18 @@ class BaseDataset(Dataset, ABC):
 
     def rename_domains(self, ID1, ID2):
         self.ID1 = ID1, self.ID2 = ID2
-        self.name1, self.name2 = self.parser.mode + self.ID1, self.parser.mode + self.ID2
+        self.name1, self.name2 = self.mode + self.ID1, self.mode + self.ID2
         self.path1, self.path2 = os.path.join(self.root, self.name1), os.path.join(self.root, self.name2)
 
     def get_filenames(self):
         filenames1, filenames2 = [], []
         if self.parser.fold is not None:
             # ensure folds were created
-            assert os.path.exists(os.path.join(self.path1, "folds")), "folder ``folds`` not found at: %s\n"%self.path1\
-                                                                        "make sure you have run ``utils/kFold.py`` to fold your data."
+            assert os.path.exists(os.path.join(self.path1, "folds")), "folder ``folds`` not found at: %s\n"\
+                                                                      "make sure you have run ``utils/kFold.py`` to fold your data."%self.path1
 
-            assert os.path.exists(os.path.join(self.path2, "folds")), "folder ``folds`` not found at: %s\n"%self.path2\
-                                                                        "make sure you have run ``utils/kFold.py`` to fold your data."
+            assert os.path.exists(os.path.join(self.path2, "folds")), "folder ``folds`` not found at: %s\n"\
+                                                                        "make sure you have run ``utils/kFold.py`` to fold your data."%self.path2
 
             folds_text_files1 = os.listdir(os.path.join(self.path1, "folds"))
             folds_text_files2 = os.listdir(os.path.join(self.path2, "folds"))
@@ -64,7 +66,7 @@ class BaseDataset(Dataset, ABC):
                                                                     " -K flag in utils/kFold.py."
             
             # keep the appropriate folds based on the dataset mode.
-            if self.parser.mode == "train":
+            if self.mode == "train":
                 # simply remove the validate fold from the files
                 folds_text_files1.remove("{}.txt".format(self.parser.fold))
                 folds_text_files2.remove("{}.txt".format(self.parser.fold))

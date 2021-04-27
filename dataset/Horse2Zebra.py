@@ -1,5 +1,7 @@
+from dataset.BaseDataset import BaseDataset
+
 class Horse2Zebra(BaseDataset):
-    def __init__(self, parser, transform1 = None, transform2 = None):
+    def __init__(self, parser, mode = "train", transform1 = None, transform2 = None):
         """
         Arguments
         ---------
@@ -8,7 +10,7 @@ class Horse2Zebra(BaseDataset):
         :param transform1 : callable, preprocessing transformation(s) for images in domain1
         :param transform2 : callable, preprocessing transformation(s) for images in domain2
         """
-        super(Horse2Zebra, self).__init__(parser)
+        super(Horse2Zebra, self).__init__(parser, mode)
         self.rename_domains("Horse", "Zebra")
         self.filenames1, self.filenames2 = self.get_filenames()
         self.size1, self.size2 = len(self.filenames1), len(self.filenames2)
