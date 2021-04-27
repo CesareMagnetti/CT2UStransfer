@@ -2,7 +2,7 @@
 creates K text files (1 for each fold) containing filenames of data. This is useful to divide train
 data into K-1 folds for training and 1 of validation, which can then be cross-validated.
 
-example of terminal run for a ten fold of training data (random seed allows reproducibility):
+example of terminal run for a ten fold of training data (random seed allows reproducibility when shuffling filenames):
 
 source env/bin/activate
 python kFold.py -r path/to/train_data/dir -K 10 --random_seed 1
