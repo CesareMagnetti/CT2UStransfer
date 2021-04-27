@@ -63,14 +63,14 @@ class ToTensor(object):
         """
         outputs = []
         for idx, _input in enumerate(inputs):
-            #_input_is_numpy = isinstance(_input, np.ndarray)
+
             if isinstance(_input, sitk.SimpleITK.Image):
                 # Get numpy array (is a deep copy!)
                 _input = sitk.GetArrayFromImage(_input)
                 transpose = True
-            #print(f'input or converted numpy array type: {_input.dtype}')
+
             _input = torch.from_numpy(_input.astype(np.double))
-            #_input = torch.from_numpy(_input)
+
             if transpose:
                 if len(_input.shape) == 3:
                     _input = _input.permute(2,0,1) #Change size from
