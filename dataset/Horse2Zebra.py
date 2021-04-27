@@ -1,26 +1,19 @@
 class Horse2Zebra(BaseDataset):
-    def __init__(self, parser, mode):
+    def __init__(self, parser, transform1 = None, transform2 = None):
         """
         Arguments
         ---------
         :param parser : argparse instance containing all options for the experiments.
                         Please see scripts in the parser folder to inspect available flags.
-        :param mode : str, either "train"/"valid"/"test"
+        :param transform1 : callable, preprocessing transformation(s) for images in domain1
+        :param transform2 : callable, preprocessing transformation(s) for images in domain2
         """
-        super(Horse2Zebra, self).__init__()
-
-        assert kind.lower() in ("horse", "zebra"), "unknown parameter ``kind``. expected <horse/zebra> got: %s"%kind
-        assert split in ("train", "test"), "unknown parameter ``split``. expected <train/test> got: %s"%split
-
-        if kind.lower() == "horse":
-            self.root = os.path.join(root, split+"A")
-        else:
-            self.root = os.path.join(root, split+"B")
-
-        self.filenames = [os.path.realpath(y) for y in gglob(self.root, '*.*') if _is_image_file(y)]      
-        self.filenames.sort() #sort files, they will be shuffled by the data loader
-
-        self.transform = transform
+        super(Horse2Zebra, self).__init__(parser)
+        self.rename_domains("Horse", "Zebra")
+        self.filenames1, self.filenames2 = self.get_filenames()
+        self.size1, self.size2 = len(self.filenames1), len(self.filenames2)
+        self.transform1 = transform1
+        self.transform2 = transform2
 
     def __getitem__(self, index):
         """
@@ -32,7 +25,19 @@ class Horse2Zebra(BaseDataset):
         -------
         image array (transformed if needed)
         """
-        image = load_image(self.filenames[index])
-        if self.transform is not None:
-            image = self.transform(image)
-        return image
+        image1 = self.load_image(self.filenames1[index%self.size1]) # make sure index is in range for domain1
+        # index 2 could be a random integer for unpaired data or the same index as index1 for paired data
+        if self.parser.paired_data:
+            index2 = index%self.size2 # make sure in range, paired data
+        else:
+            index2 = random.randint(0, self.size2-1) # randomize data
+        image2 = self.load_image(self.filenames2[index2])
+
+        if self.transform1 is not None:
+            image1 = self.transform1(image1)
+        if self.transform2 is not None:
+            image2 = self.transform2(image2)
+        return image1, image2
+    
+    def __len__(self):
+        return self.size1, self.size2
