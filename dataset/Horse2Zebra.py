@@ -1,17 +1,19 @@
 from dataset.BaseDataset import BaseDataset
+import random
 
 class Horse2Zebra(BaseDataset):
-    def __init__(self, parser, mode = "train", transform1 = None, transform2 = None):
+    def __init__(self, parser, mode = "train", isValid = False, transform1 = None, transform2 = None):
         """
         Arguments
         ---------
         :param parser : argparse instance containing all options for the experiments.
                         Please see scripts in the parser folder to inspect available flags.
-        :param transform1 : callable, preprocessing transformation(s) for images in domain1
-        :param transform2 : callable, preprocessing transformation(s) for images in domain2
+        :param isValid : bool, if this set is to be used as a validation set. (default = False)
+        :param transform1 : callable, preprocessing transformation(s) for images in domain1.
+        :param transform2 : callable, preprocessing transformation(s) for images in domain2.
         """
-        super(Horse2Zebra, self).__init__(parser, mode)
-        self.rename_domains("Horse", "Zebra")
+        super(Horse2Zebra, self).__init__(parser, mode, isValid)
+        # self.rename_domains("Horse", "Zebra") # if you do this make sure you change filenames after downloading them
         self.filenames1, self.filenames2 = self.get_filenames()
         self.size1, self.size2 = len(self.filenames1), len(self.filenames2)
         self.transform1 = transform1
@@ -42,4 +44,8 @@ class Horse2Zebra(BaseDataset):
         return image1, image2
     
     def __len__(self):
-        return self.size1, self.size2
+        """
+        We have two datasets with different number of images,
+        we take a maximum of them as the dataset size.
+        """
+        return max(self.size1, self.size2)

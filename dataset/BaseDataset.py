@@ -25,10 +25,11 @@ class BaseDataset(Dataset, ABC):
     __metaclass__  = ABCMeta
 
     @abstractmethod
-    def __init__(self, parser, mode):
+    def __init__(self, parser, mode, isValid):
         super(BaseDataset, self).__init__()
         self.root = parser.dataroot
         self.mode = mode
+        self.isValid = isValid
         self.ID1, self.ID2 = "A", "B"
         self.name1, self.name2 = mode + self.ID1, mode + self.ID2
         self.path1, self.path2 = os.path.join(self.root, self.name1), os.path.join(self.root, self.name2)
@@ -44,7 +45,7 @@ class BaseDataset(Dataset, ABC):
         raise NotImplementedError("children subclasses of ``BaseDataset`` must implement ``__len__`` method!")
 
     def rename_domains(self, ID1, ID2):
-        self.ID1 = ID1, self.ID2 = ID2
+        self.ID1, self.ID2 = ID1, ID2
         self.name1, self.name2 = self.mode + self.ID1, self.mode + self.ID2
         self.path1, self.path2 = os.path.join(self.root, self.name1), os.path.join(self.root, self.name2)
 
@@ -57,23 +58,21 @@ class BaseDataset(Dataset, ABC):
 
             assert os.path.exists(os.path.join(self.path2, "folds")), "folder ``folds`` not found at: %s\n"\
                                                                         "make sure you have run ``utils/kFold.py`` to fold your data."%self.path2
-
-            folds_text_files1 = os.listdir(os.path.join(self.path1, "folds"))
-            folds_text_files2 = os.listdir(os.path.join(self.path2, "folds"))
+            
+            # keep the appropriate folds based on the dataset mode.
+            if not self.isValid:
+                # keep all folds except given one for training
+                temp1, temp2 = os.path.join(self.path1, "folds"), os.path.join(self.path2, "folds")
+                folds_text_files1 = [os.path.abspath(os.path.join(temp1, f)) for f in os.listdir(temp1) if str(self.parser.fold) not in f]
+                folds_text_files2 = [os.path.abspath(os.path.join(temp2, f)) for f in os.listdir(temp2) if str(self.parser.fold) not in f]
+            else: 
+                # only keep the given fold as validation set
+                folds_text_files1 = [os.path.abspath(os.path.join(self.path1, "folds/{}.txt".format(self.parser.fold))),]
+                folds_text_files2 = [os.path.abspath(os.path.join(self.path2, "folds/{}.txt".format(self.parser.fold))),]
 
             # both datasets must have been folded equally
             assert len(folds_text_files1) == len(folds_text_files2), "make sure that the two datasets have been folded using the same"\
                                                                     " -K flag in utils/kFold.py."
-            
-            # keep the appropriate folds based on the dataset mode.
-            if self.mode == "train":
-                # simply remove the validate fold from the files
-                folds_text_files1.remove("{}.txt".format(self.parser.fold))
-                folds_text_files2.remove("{}.txt".format(self.parser.fold))
-            else: 
-                # only keep the validate fold
-                folds_text_files1 = ["{}.txt".format(self.parser.fold),]
-                folds_text_files2 = ["{}.txt".format(self.parser.fold),]
 
             # retrieve filenames
             for fname1, fname2 in zip(folds_text_files1, folds_text_files2):
@@ -101,11 +100,11 @@ class BaseDataset(Dataset, ABC):
         return any(filename.endswith(extension) for extension in IMG_EXTENSIONS)
 
     @staticmethod
-    def load_image(self, fname):
+    def load_image(fname):
         return sitk.ReadImage(fname)
 
     @staticmethod
-    def save_image(self, itk_img, fname):
+    def save_image(itk_img, fname):
         sitk.WriteImage(itk_img, fname)
 
     @staticmethod
