@@ -15,7 +15,7 @@ def show_batch(tensors, nrow = 8, denorm = None):
         tensors = denorm(tensors)
 
     tensors = make_grid(tensors, nrow=nrow, padding=2, normalize=True,
-                            range=None, scale_each=False, pad_value=0)
+                        scale_each=False, pad_value=0)
     show(tensors)
 
 def Gram(tensor):
