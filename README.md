@@ -1,6 +1,8 @@
-# Experiment for CycleGAN and Constrastive-Unpaired-Transaltion (CUT) baselines
+# Experiments for CycleGAN and Constrastive-Unpaired-Transaltion (CUT) baselines
 
 Given that repo for CUT and CycleGAN is very well made, we can use most of their code to train two baselines for our project, one using CycleGAN and one using CUT. Results should not be groundbreaking but at the very least they should work. These will be used as baselines for future experiments in my Thesis.
+
+# Dependencies
 
 before running any experiment make sure you have all the dependencies needed.
 
@@ -21,7 +23,12 @@ python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
 ```
-then launch either experiment.
+
+Pytorch-FID score library:
+
+```
+pip install pytorch-fid
+```
 
 # Logs
 
