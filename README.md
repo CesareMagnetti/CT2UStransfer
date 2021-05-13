@@ -30,6 +30,16 @@ Pytorch-FID score library:
 pip install pytorch-fid
 ```
 
+# Results
+
+Here are some examples of what we were able to achieve with these preliminary experiments, they will act as a baseline for future research.
+
+<div align="center">
+    <img width="45%" src="readme_images/baseline_results.png" alt="baseline results"
+	title="baseline results"><br>
+	Fig 1: Diagram showing some synthetic US images from CT content using CUT and CycleGAN. They will act as a baseline for future experiments.
+</div><br><br>
+
 # Logs
 
 -there is a bug in CUT repo for grayscale -> grayscale translation. In data/unaligned_dataset.py line 67 replace: ```transform = get_transform(modified_opt)``` with ```transform = get_transform(modified_opt, grayscale=True)```.
