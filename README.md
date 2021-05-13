@@ -35,7 +35,7 @@ pip install pytorch-fid
 Here are some examples of what we were able to achieve with these preliminary experiments, they will act as a baseline for future research.
 
 <div align="center">
-    <img width="45%" src="readme_images/CT2USbaseline.pdf" alt="baseline results"
+    <img width="45%" src="readme_images/baseline_Results.png" alt="baseline results"
 	title="baseline results"><br>
 	Fig 1: Diagram showing some synthetic US images from CT content using CUT and CycleGAN. They will act as a baseline for future experiments.
 </div><br><br>
