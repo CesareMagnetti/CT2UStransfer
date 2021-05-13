@@ -3,6 +3,33 @@ import itertools
 from util.image_pool import ImagePool
 from .base_model import BaseModel
 from . import networks
+import lpips.models as lpips
+
+
+class LPIPS(object):
+    '''
+    adapted from https://github.com/richzhang/PerceptualSimilarity, you must clone their repo and debug some imports to
+    make this work.
+    '''
+
+    def __init__(self, cuda, version="0.1", model='net-lin', net='alex'):
+        self.version = version
+        self.model = lpips.PerceptualLoss(model=model, net=net, use_gpu=cuda)
+
+    def __call__(self, img1, img2, normalized=True):
+        """
+        :param img1: <torch.tensor> shape: BxCxHxW, image to compare
+        :param img2: <torch.tensor> shape: BxCxHxW, ground truth image
+
+                                -------
+
+        :returns learned perceptual similarity
+        """
+        if normalized:
+            img1 = img1 * 2.0 - 1.0
+            img2 = img2 * 2.0 - 1.0
+
+        return torch.mean(self.model.forward(img1, img2), dim=0)
 
 
 class CycleGANModel(BaseModel):
@@ -41,7 +68,7 @@ class CycleGANModel(BaseModel):
             parser.add_argument('--lambda_A', type=float, default=10.0, help='weight for cycle loss (A -> B -> A)')
             parser.add_argument('--lambda_B', type=float, default=10.0, help='weight for cycle loss (B -> A -> B)')
             parser.add_argument('--lambda_identity', type=float, default=0.5, help='use identity mapping. Setting lambda_identity other than 0 has an effect of scaling the weight of the identity mapping loss. For example, if the weight of the identity loss should be 10 times smaller than the weight of the reconstruction loss, please set lambda_identity = 0.1')
-
+            parser.add_argument('--cycle_loss', type=str, default='L1', help='what cycle loss to use. (default: L1) options: L1/LPIPS')
         return parser
 
     def __init__(self, opt):
@@ -88,8 +115,13 @@ class CycleGANModel(BaseModel):
             self.fake_B_pool = ImagePool(opt.pool_size)  # create image buffer to store previously generated images
             # define loss functions
             self.criterionGAN = networks.GANLoss(opt.gan_mode).to(self.device)  # define GAN loss.
-            self.criterionCycle = torch.nn.L1Loss()
-            self.criterionIdt = torch.nn.L1Loss()
+            if opt.cycle_loss == "L1":
+                self.criterionCycle = torch.nn.L1Loss()
+                self.criterionIdt = torch.nn.L1Loss()
+            else:
+                self.criterionCycle = LPIPS(cuda = torch.cuda.is_available(), net='vgg')
+                self.criterionIdt = LPIPS(cuda = torch.cuda.is_available(), net='vgg')
+
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             self.optimizer_G = torch.optim.Adam(itertools.chain(self.netG_A.parameters(), self.netG_B.parameters()), lr=opt.lr, betas=(opt.beta1, 0.999))
             self.optimizer_D = torch.optim.Adam(itertools.chain(self.netD_A.parameters(), self.netD_B.parameters()), lr=opt.lr, betas=(opt.beta1, 0.999))
