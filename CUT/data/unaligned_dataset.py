@@ -64,7 +64,7 @@ class UnalignedDataset(BaseDataset):
 #        print('current_epoch', self.current_epoch)
         is_finetuning = self.opt.isTrain and self.current_epoch > self.opt.n_epochs
         modified_opt = util.copyconf(self.opt, load_size=self.opt.crop_size if is_finetuning else self.opt.load_size)
-        transform = get_transform(modified_opt)
+        transform = get_transform(modified_opt, grayscale = self.opt.input_nc == 1) # added grayscale flag, authors probably just forgot it
         A = transform(A_img)
         B = transform(B_img)
 
