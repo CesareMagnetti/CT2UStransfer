@@ -8,7 +8,10 @@ class Launcher(TmuxLauncher):
             Options(
                 # NOTE: download the resized (and compressed) val set from
                 # http://efrosgans.eecs.berkeley.edu/CUT/datasets/cityscapes_val_for_CUT.tar
-                dataroot="datasets/cityscapes/cityscapes_val/",
+                checkpoints_dir="/vol/bitbucket/cm1320/general/CUT/checkpoints/",
+                results_dir="/vol/bitbucket/cm1320/general/CUT/results/",
+                dataroot="/vol/bitbucket/cm1320/general/datasets/cityscapes_val/",
+                gpu_ids="-1",
                 direction="BtoA",
                 phase="val",
                 name="cityscapes_cut_pretrained",
@@ -17,36 +20,52 @@ class Launcher(TmuxLauncher):
 
             # Command 1
             Options(
-                dataroot="./datasets/cityscapes_unaligned/cityscapes/",
+                checkpoints_dir="/vol/bitbucket/cm1320/general/CUT/checkpoints/",
+                results_dir="/vol/bitbucket/cm1320/general/CUT/results/",
+                dataroot="/vol/bitbucket/cm1320/general/datasets/cityscapes_val/",
+                gpu_ids="-1",
                 direction="BtoA",
+                phase="val",
                 name="cityscapes_fastcut_pretrained",
                 CUT_mode="FastCUT",
             ),
 
             # Command 2
             Options(
-                dataroot="./datasets/horse2zebra/",
+                checkpoints_dir="/vol/bitbucket/cm1320/general/CUT/checkpoints/",
+                results_dir="/vol/bitbucket/cm1320/general/CUT/results/",
+                dataroot="/vol/bitbucket/cm1320/general/datasets/horse2zebra/",
+                gpu_ids="-1",
                 name="horse2zebra_cut_pretrained",
                 CUT_mode="CUT"
             ),
 
             # Command 3
             Options(
-                dataroot="./datasets/horse2zebra/",
+                checkpoints_dir="/vol/bitbucket/cm1320/general/CUT/checkpoints/",
+                results_dir="/vol/bitbucket/cm1320/general/CUT/results/",
+                dataroot="/vol/bitbucket/cm1320/general/datasets/horse2zebra/",
+                gpu_ids="-1",
                 name="horse2zebra_fastcut_pretrained",
                 CUT_mode="FastCUT",
             ),
 
             # Command 4
             Options(
-                dataroot="./datasets/afhq/cat2dog/",
+                checkpoints_dir="/vol/bitbucket/cm1320/general/CUT/checkpoints/",
+                results_dir="/vol/bitbucket/cm1320/general/CUT/results/",
+                dataroot="/vol/bitbucket/cm1320/general/datasets/cat2dog/",
+                gpu_ids="-1",
                 name="cat2dog_cut_pretrained",
                 CUT_mode="CUT"
             ),
 
             # Command 5
             Options(
-                dataroot="./datasets/afhq/cat2dog/",
+                checkpoints_dir="/vol/bitbucket/cm1320/general/CUT/checkpoints/",
+                results_dir="/vol/bitbucket/cm1320/general/CUT/results/",
+                dataroot="/vol/bitbucket/cm1320/general/datasets/cat2dog/",
+                gpu_ids="-1",
                 name="cat2dog_fastcut_pretrained",
                 CUT_mode="FastCUT",
             ),
