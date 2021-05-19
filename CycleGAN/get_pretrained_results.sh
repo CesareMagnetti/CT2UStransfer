@@ -20,11 +20,16 @@ else
     bash ./scripts/download_cyclegan_model.sh $MODE_B ${DIR}${FOLDER}checkpoints
 fi
 
-if [ -d ${DIR}datasets/${MODE_A}] 
+if [ -d ${DIR}datasets/${MODE_A} ] 
 then
     echo "Dataset ${MODE_A} already downloaded at ${DIR}datasets/${MODE_A}."
 else
     bash ./datasets/download_cyclegan_dataset.sh $MODE_A ${DIR}datasets
+    # temporary fix to an annoying bug that saves the dataset in a nested folder (i.e. datasets/horse2zebra/horse2zebra/)
+    # while their code expects (i.e. datasets/horse2zebra/)
+    mv ${DIR}datasets/$MODE_A ${DIR}datasets/temp
+    mv ${DIR}datasets/temp/$MODE_A ${DIR}datasets/
+    rm -rf ${DIR}datasets/temp/
 fi
 
 # generate results
