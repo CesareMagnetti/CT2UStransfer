@@ -44,9 +44,10 @@ class CUTModel(BaseModel):
         if opt.CUT_mode.lower() == "cut":
             parser.set_defaults(nce_idt=True, lambda_NCE=1.0)
         elif opt.CUT_mode.lower() == "fastcut":
+            # modified defaults so that its exactly like CUT but without identity loss, lambda_NCE was 10.0
             parser.set_defaults(
-                nce_idt=False, lambda_NCE=10.0, flip_equivariance=True,
-                n_epochs=150, n_epochs_decay=50
+                nce_idt=False, lambda_NCE=1.0, # flip_equivariance=True,
+                #n_epochs=150, n_epochs_decay=50
             )
         else:
             raise ValueError(opt.CUT_mode)
