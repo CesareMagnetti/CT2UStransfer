@@ -59,7 +59,7 @@ python -m pytorch_fid <path/to/results>/CycleGAN_LPIPS_noIdtLoss/test_latest/ima
 ```
 
 # Acknowledgments
-The code is heavily based on [CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) [CUT](https://github.com/taesungp/contrastive-unpaired-translation) with only slight modifications for the perceptual cycle-consistency loss. LPIPS implementation taken from [PerceptualSimilarity](https://github.com/richzhang/PerceptualSimilarity) and FID scores where calculated using [pytorch-fid](https://github.com/mseitzer/pytorch-fid).
+The code is heavily based on [CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) and [CUT](https://github.com/taesungp/contrastive-unpaired-translation) with only slight modifications for the perceptual cycle-consistency loss. LPIPS implementation taken from [PerceptualSimilarity](https://github.com/richzhang/PerceptualSimilarity) and FID scores where calculated using [pytorch-fid](https://github.com/mseitzer/pytorch-fid).
 
 # Logs
 
