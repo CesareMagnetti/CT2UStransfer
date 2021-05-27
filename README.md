@@ -36,7 +36,7 @@ Here are some examples of what we were able to achieve with these preliminary ex
 Looking at the results in the tablerom the above we came to the conclusion that a CycleGAN without the identity constraint and using LPIPS as a cycle-consistency loss gives the most accurate results. A standard CUT was also found to yield good results, however, it struggles to retain the right CT content. The figure below emphasizes this observation, as we can see that the generate US are much more aligned using the CYcleGAN.
 
 <div align="center">
-    <img width="80%" src="readme_images/CT2US_best_models.png" alt="best results"
+    <img width="95%" src="readme_images/CT2US_best_models.png" alt="best results"
 	title="best results"><br>
 	Fig 2: Diagram showing results of the two top performing architectures, each column represents a a different randomly sampled CT slice from the test set. 	  The second and third rows respectively show simulated US for a standard CUT and a CycleGAN with LPIPS cycle-consistency loss and no identity loss. The top 	 and bottom rows represent the same CT content slices for ease of comparison.
 </div><br><br>
