@@ -58,6 +58,9 @@ bash rearrange_files_cycle_gan.sh <path/to/results>/CycleGAN_LPIPS_noIdtLoss/tes
 python -m pytorch_fid <path/to/results>/CycleGAN_LPIPS_noIdtLoss/test_latest/images/real_B <path/to/results>/CycleGAN_LPIPS_noIdtLoss/test_latest/images/fake_B
 ```
 
+# Acknowledgments
+The code is heavily based on [CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) [CUT](https://github.com/taesungp/contrastive-unpaired-translation) with only slight modifications for the perceptual cycle-consistency loss. LPIPS implementation taken from [PerceptualSimilarity](https://github.com/richzhang/PerceptualSimilarity) and FID scores where calculated using [pytorch-fid](https://github.com/mseitzer/pytorch-fid).
+
 # Logs
 
 -there is a bug in CUT repo for grayscale -> grayscale translation. In data/unaligned_dataset.py line 67 replace: ```transform = get_transform(modified_opt)``` with ```transform = get_transform(modified_opt, grayscale = opt.input_nc == 1)```.
