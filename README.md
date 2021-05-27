@@ -52,6 +52,9 @@ To only train the best model run:
 
 ```bash
 python CycleGAN/train.py --dataroot <path/to/data> --checkpoints_dir <path/to/checkpoints> --name CycleGAN_LPIPS_noIdtLoss --model cycle_gan --input_nc 1 --output_nc 1 --batch_size 2 --cycle_loss LPIPS --save_epoch_freq 10 --lambda_identity 0
+python CycleGAN/test.py --dataroot <path/to/data> --checkpoints_dir <path/to/checkpoints> --results_dir <path/to/results> --name CycleGAN_LPIPS_noIdtLoss --model cycle_gan --input_nc 1 --output_nc 1
+bash rearrange_files_cycle_gan.sh <path/to/results>/CycleGAN_LPIPS_noIdtLoss/test_latest/images/
+python -m pytorch_fid <path/to/results>/CycleGAN_LPIPS_noIdtLoss/test_latest/images/real_B <path/to/results>/CycleGAN_LPIPS_noIdtLoss/test_latest/images/fake_B
 ```
 
 # Logs
