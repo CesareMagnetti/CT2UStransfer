@@ -1,4 +1,4 @@
-# Experiments for CycleGAN and Constrastive-Unpaired-Transaltion (CUT) baselines
+# Experiments for CycleGAN and Constrastive-Unpaired-Transaltion (CUT) to simulate US images from CT content
 
 <div align="center">
     <img width="100%" src="readme_images/CT2US_best_models.png" alt="best results"
