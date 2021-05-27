@@ -37,7 +37,22 @@ Here are some examples of what we were able to achieve with these preliminary ex
 	title="FID scores"><br>
 </div><br><br>
 
-Looking at the results in the tablerom the above we came to the conclusion that a CycleGAN without the identity constraint and using LPIPS as a cycle-consistency loss gives the most accurate results. A standard CUT was also found to yield good results, however, it struggles to retain the right CT content. Fig. 1 emphasizes this observation, as we can see that the generate US are much more aligned using the CycleGAN.
+From the above results we came to the conclusion that a CycleGAN without the identity constraint and using LPIPS as a cycle-consistency loss gives the most accurate results. A standard CUT was also found to yield good results, however, it struggles to retain the right CT content. Fig. 1 emphasizes this observation, as we can see that the generate US are much more aligned using the CycleGAN.
+
+# Usage
+
+To replicate all the experiments run:
+
+```bash
+bash launch_preliminary_experiments.sh <path/to/data> <path/to/checkpoints>
+bash test_preliminary_experiments.sh <path/to/data> <path/to/checkpoints> <path/to/results>
+```
+
+To only train the best model run:
+
+```bash
+python CycleGAN/train.py --dataroot <path/to/data> --checkpoints_dir <path/to/checkpoints> --name CycleGAN_LPIPS_noIdtLoss --model cycle_gan --input_nc 1 --output_nc 1 --batch_size 2 --cycle_loss LPIPS --save_epoch_freq 10 --lambda_identity 0
+```
 
 # Logs
 
