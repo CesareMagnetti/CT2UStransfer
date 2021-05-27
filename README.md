@@ -17,7 +17,7 @@ pip install -r requirements.txt
 Here are some examples of what we were able to achieve with these preliminary experiments, they will act as a baseline for future research.
 
 <div align="center">
-    <img width="45%" src="readme_images/CT2US_preliminary_results.pdf" alt="preliminary results"
+    <img width="45%" src="readme_images/CT2US_preliminary_results.png" alt="preliminary results"
 	title="preliminary results"><br>
 	Fig 1: Diagram showing results of all described experiments, each column represents a different model and each row a different randomly sampled CT slice 	 from the test set. We color-coded experiment 2 outcomes such that models highlighted in blue where trained using the identity constraint, while models 		highlighted in red are not using this constraint. Each column block respectively reports results for experiments 1,2,3 and 4. The corresponding CT content 	   is embedded in the top left corner of each generated US.
 </div><br><br>
