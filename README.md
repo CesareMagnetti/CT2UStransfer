@@ -1,6 +1,10 @@
 # Experiments for CycleGAN and Constrastive-Unpaired-Transaltion (CUT) baselines
 
-Given that repo for CUT and CycleGAN is very well made, we can use most of their code to train two baselines for our project, one using CycleGAN and one using CUT. Results should not be groundbreaking but at the very least they should work. These will be used as baselines for future experiments in my Thesis.
+<div align="center">
+    <img width="100%" src="readme_images/CT2US_best_models.png" alt="best results"
+	title="best results"><br>
+	Fig 1: Diagram showing results of the two top performing architectures, each column represents a a different randomly sampled CT slice from the test set. 	  The second and third rows respectively show simulated US for a standard CUT and a CycleGAN with LPIPS cycle-consistency loss and no identity loss. The top 	 and bottom rows represent the same CT content slices for ease of comparison.
+</div><br><br>
 
 # Dependencies
 
@@ -25,7 +29,7 @@ Here are some examples of what we were able to achieve with these preliminary ex
 <div align="center">
     <img width="80%" src="readme_images/CT2US_preliminary_results.png" alt="preliminary results"
 	title="preliminary results"><br>
-	Fig 1: Diagram showing results of all described experiments, each column represents a different model and each row a different randomly sampled CT slice 	 from the test set. We color-coded experiment 2 outcomes such that models highlighted in blue where trained using the identity constraint, while models 		highlighted in red are not using this constraint. Each column block respectively reports results for experiments 1,2,3 and 4. The corresponding CT content 	   is embedded in the top left corner of each generated US.
+	Fig 2: Diagram showing results of all described experiments, each column represents a different model and each row a different randomly sampled CT slice 	 from the test set. We color-coded experiment 2 outcomes such that models highlighted in blue where trained using the identity constraint, while models 		highlighted in red are not using this constraint. Each column block respectively reports results for experiments 1,2,3 and 4. The corresponding CT content 	   is embedded in the top left corner of each generated US.
 </div><br><br>
 
 <div align="center">
@@ -33,13 +37,7 @@ Here are some examples of what we were able to achieve with these preliminary ex
 	title="FID scores"><br>
 </div><br><br>
 
-Looking at the results in the tablerom the above we came to the conclusion that a CycleGAN without the identity constraint and using LPIPS as a cycle-consistency loss gives the most accurate results. A standard CUT was also found to yield good results, however, it struggles to retain the right CT content. The figure below emphasizes this observation, as we can see that the generate US are much more aligned using the CYcleGAN.
-
-<div align="center">
-    <img width="95%" src="readme_images/CT2US_best_models.png" alt="best results"
-	title="best results"><br>
-	Fig 2: Diagram showing results of the two top performing architectures, each column represents a a different randomly sampled CT slice from the test set. 	  The second and third rows respectively show simulated US for a standard CUT and a CycleGAN with LPIPS cycle-consistency loss and no identity loss. The top 	 and bottom rows represent the same CT content slices for ease of comparison.
-</div><br><br>
+Looking at the results in the tablerom the above we came to the conclusion that a CycleGAN without the identity constraint and using LPIPS as a cycle-consistency loss gives the most accurate results. A standard CUT was also found to yield good results, however, it struggles to retain the right CT content. Fig. 1 emphasizes this observation, as we can see that the generate US are much more aligned using the CycleGAN.
 
 # Logs
 
