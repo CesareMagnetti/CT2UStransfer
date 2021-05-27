@@ -11,6 +11,7 @@
 before running any experiment make sure you have all the dependencies needed.
 
 ```bash
+git clone git@gitlab.com:mscthesis1/backgroundexperiments.git
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
