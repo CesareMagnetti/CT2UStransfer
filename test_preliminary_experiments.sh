@@ -8,7 +8,6 @@ RESULTDIR=$3
 
 # CycleGAN with standard configuration
 python CycleGAN/test.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --results_dir $RESULTDIR --name CycleGAN_standard --model cycle_gan --input_nc 1 --output_nc 1
-
 # CUT with standard configuration
 python CUT/test.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --results_dir $RESULTDIR --name CUT_standard --model cut --CUT_mode CUT --input_nc 1 --output_nc 1
 
@@ -16,15 +15,18 @@ python CUT/test.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --result
 
 # CycleGAN without identity loss
 python CycleGAN/test.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --results_dir $RESULTDIR --name CycleGAN_noIdtLoss --model cycle_gan --input_nc 1 --output_nc 1
-
 # CUT without identity loss
 python CUT/test.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --results_dir $RESULTDIR --name CUT_noIdtLoss --model cut --CUT_mode FastCUT --input_nc 1 --output_nc 1
 
 # ==== 3rd experiment ====
+# use LPIPS as a cycle consistency loss
 
-# use LPIPS as a cycle consistency loss both for the model with and without the idt loss
+# CycleGAN+LPIPS with the idt loss
 python CycleGAN/test.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --results_dir $RESULTDIR --name CycleGAN_LPIPS --model cycle_gan --input_nc 1 --output_nc 1
+# CycleGAN+LPIPS without the idt loss
 python CycleGAN/test.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --results_dir $RESULTDIR --name CycleGAN_LPIPS_noIdtLoss --model cycle_gan --input_nc 1 --output_nc 1
+# # CycleGAN+LPIPS without the idt loss and using a scaling factor of 1 (instead of 10) for the LPIPS loss
+python CycleGAN/test.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --results_dir $RESULTDIR --name CycleGAN_LPIPS_noIdtLoss_lambda_AB_1 --model cycle_gan --input_nc 1 --output_nc 1
 
 # ==== 4th experiment ====
 
@@ -41,6 +43,7 @@ bash rearrange_files_cycle_gan.sh ${RESULTDIR}CycleGAN_standard/test_latest/imag
 bash rearrange_files_cycle_gan.sh ${RESULTDIR}CycleGAN_noIdtLoss/test_latest/images/
 bash rearrange_files_cycle_gan.sh ${RESULTDIR}CycleGAN_LPIPS/test_latest/images/
 bash rearrange_files_cycle_gan.sh ${RESULTDIR}CycleGAN_LPIPS_noIdtLoss/test_latest/images/
+bash rearrange_files_cycle_gan.sh ${RESULTDIR}CycleGAN_LPIPS_noIdtLoss_lambda_AB_1/test_latest/images/
 
 # calculate FID for each model
 echo -e "CycleGAN_standard:\t" >> ${RESULTDIR}FID_scores.txt
@@ -55,6 +58,8 @@ echo -e "\nCycleGAN_LPIPS:\t" >> ${RESULTDIR}FID_scores.txt
 python -m pytorch_fid ${RESULTDIR}CycleGAN_LPIPS/test_latest/images/real_B ${RESULTDIR}CycleGAN_LPIPS/test_latest/images/fake_B >> ${RESULTDIR}FID_scores.txt
 echo -e "\nCycleGAN_LPIPS_noIdtLoss:\t" >> ${RESULTDIR}FID_scores.txt
 python -m pytorch_fid ${RESULTDIR}CycleGAN_LPIPS_noIdtLoss/test_latest/images/real_B ${RESULTDIR}CycleGAN_LPIPS_noIdtLoss/test_latest/images/fake_B >> ${RESULTDIR}FID_scores.txt
+echo -e "\nCycleGAN_LPIPS_noIdtLoss_lambda_AB_1:\t" >> ${RESULTDIR}FID_scores.txt
+python -m pytorch_fid ${RESULTDIR}CycleGAN_LPIPS_noIdtLoss_lambda_AB_1/test_latest/images/real_B ${RESULTDIR}CycleGAN_LPIPS_noIdtLoss_lambda_AB_1/test_latest/images/fake_B >> ${RESULTDIR}FID_scores.txt
 echo -e "\nCUT_standard_noLayer0:\t" >> ${RESULTDIR}FID_scores.txt
 python -m pytorch_fid ${RESULTDIR}CUT_standard_noLayer0/test_latest/images/real_B ${RESULTDIR}CUT_standard_noLayer0/test_latest/images/fake_B >> ${RESULTDIR}FID_scores.txt
 echo -e "\nCUT_noIdtLoss_noLayer0:\t" >> ${RESULTDIR}FID_scores.txt

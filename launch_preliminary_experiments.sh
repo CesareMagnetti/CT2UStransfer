@@ -22,7 +22,7 @@ python CUT/train.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --name 
 # ==== 3rd experiment ====
 
 # use LPIPS as a cycle consistency loss both for the model with and without the idt loss
-python CycleGAN/train.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --name CycleGAN_LPIPS --model cycle_gan --input_nc 1 --output_nc 1 --batch_size 2 --cycle_loss LPIPS --save_epoch_freq 10
+python CycleGAN/train.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --name CycleGAN_LPIPS --model cycle_gan --input_nc 1 --output_nc 1 --batch_size 2 --cycle_loss LPIPS --save_epoch_freq 10cd 
 python CycleGAN/train.py --dataroot $DATADIR --checkpoints_dir $CHECKPOINTDIR --name CycleGAN_LPIPS_noIdtLoss --model cycle_gan --input_nc 1 --output_nc 1 --batch_size 2 --cycle_loss LPIPS --save_epoch_freq 10 --lambda_identity 0
 
 # ==== 4th experiment ====
